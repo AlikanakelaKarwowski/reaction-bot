@@ -16,12 +16,15 @@ async def on_ready():
 @client.event 
 async def on_raw_reaction_add(payload):
     message_id = payload.message_id
-    if message_id == 769610274256715837:
+    if message_id == 769645416672919572:
         guild_id = payload.guild_id
         guild = discord.utils.find(lambda g : g.id == guild_id, client.guilds)
 
-        role = discord.utils.get(guild.roles, name=payload.emoji.name)
-
+        if payload.emoji.name == 'OTP':
+            role = discord.utils.get(guild.roles, name='Off Topic Ping')
+        else:
+            role = discord.utils.get(guild.roles, name=payload.emoji.name)
+        
         if role is not None:
             logging.info(role.name)
             member = payload.member
@@ -36,17 +39,18 @@ async def on_raw_reaction_add(payload):
 @client.event
 async def on_raw_reaction_remove(payload):
     message_id = payload.message_id
-    if message_id == 769610274256715837:
+    if message_id == 769645416672919572:
         guild_id = payload.guild_id
         guild = discord.utils.find(lambda g: g.id == guild_id, client.guilds)
 
-        role = discord.utils.get(guild.roles, name=payload.emoji.name)
+        if payload.emoji.name == 'OTP':
+            role = discord.utils.get(guild.roles, name='Off Topic Ping')
+        else:
+            role = discord.utils.get(guild.roles, name=payload.emoji.name)
 
         if role is not None:
             logging.info(role.name)
             member = get(guild.members, id=payload.user_id)
-            #member = discord.utils.get(guild.members, name=payload.user_id)
-            print(member)
             if member is not None:
                 await member.remove_roles(role)
             else:
